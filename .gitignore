@@ -1,0 +1,5 @@
+# Ignore .tex intermediate file
+*.tex
+*.swp
+.auctex-auto/*
+*.bbl
