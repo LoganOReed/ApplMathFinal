@@ -7,9 +7,24 @@
 #+LATEX_HEADER: \usepackage[citestyle=alphabetic]{biblatex}
 #+LATEX_HEADER: \addbibresource{refs.bib}
 
-\begin{abstract}
+
+#+BEGIN_ABSTRACT
+
 In this paper, we will summarize a few connections between mathematics and music theory. We will look at the circle of fifths and it's connection to modular arithmetic. This is paired with a summary of the mathematics of chord construction. Specifically, we will focus on the ratio's between different notes in a chord and how these ratios are used to name the chords. We also study how one could define when two drums have the same shape, and we connect connect this concept to Euclid's proof of SAS criteria for triangle congruence. We follow this with how one could "hear" the area of a drum. We also give a brief introduction to the theory of Fourier series and its applications.
-\end{abstract}
+
+#+END_ABSTRACT
+
+* TODO Create TODO Tasks from assignment pdf
+** TODO 10-15 Pages in Length
+** TODO Title, name, affiliation, and email address (2pt)
+** TODO An abstract (3pt)
+** TODO An Intro that describes the motivation, goal, and importance of the subject (5pt)
+** TODO A concluding section that summerizes the results and findings of your paper and suggests topics for further study (5pt)
+** TODO Correct style
+*** TODO Writing (5pt)
+*** TODO LaTeX (5pt)
+** TODO Correct Content (40pt)
+* TODO Rewrite Outline for Final Project
 
 * DONE Assignment
 Write an essay summarizing the interaction between mathematics and music theory that you learn from this course or elsewhere. You should try to address at least five of the following ten questions. The essay should be _5-10_ pages in length, typeset with LaTeX
