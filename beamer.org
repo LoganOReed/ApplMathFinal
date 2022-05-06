@@ -1,0 +1,3 @@
+[[https://github.com/piazzai/arguelles][Chosen Theme]]
+** TODO Create Outline file
+** TODO Check out tikz
