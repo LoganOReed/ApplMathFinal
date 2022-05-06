@@ -52,13 +52,20 @@ Consider the eigenvalue solutions for the Laplace operator with Dirichlet bounda
 \end{cases}
 \end{equation}
 
+
 Due to Rellich's compacness lemma TODO TODO, the spectrum of the Dirichlet Laplacian consists only of discrete eigenvalues
 
 $$ 0 < \lambda_1(\Omega) \leq \lambda_1(\Omega) \leq \lambda_1(\Omega) \leq ... \to +\infty$$
 
 which can be ordered by their multiplicity \cite{extremum}.
 The first eigenvalue $\lambda_{1}$, which is also called the fundamental tone, is of particular importance.
-TODO Explain why we care about this (physics stuff)
+
+
+In 1877, Rayleigh conjectured that for all domains with a fixed area, the fundamental tone is minimized by the disc \cite{rayleigh}.
+This was eventually proven in any euclidean space, using a technique called Schwarz rearrangement \cite{extremum}.
+* TODO Write the above explicitely using pg 46 extremum
+
+* TODO Explain why we care about this (physics stuff)
 There are few polygons whose spectrum can be explicitely calculated. These polygons are equilateral triangles, hemi-equilateral triangles, and isosceles-right triangles \cite{calculate}.
 
 
