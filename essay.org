@@ -4,7 +4,7 @@
 
 
 #+SETUPFILE: ~/.doom.d/latex-output
-#+LATEX_HEADER: \usepackage[citestyle=alphabetic]{biblatex}
+#+LATEX_HEADER: \usepackage{biblatex}
 #+LATEX_HEADER: \addbibresource{refs.bib}
 
 
@@ -43,6 +43,54 @@ A conjecture of Polya and Szego states that among the polygons with the same num
 ** TODO Bibliography
 
 * Introduction
+
+Physical drums consist of a rigid shell with a membrane which produces sound when hit.
+A similar thing can be "created" in a pure mathematical setting by studing specific partial differential equations over a closed region.
+Specifically, the frequencies of the drum membrane corresponds to the eigenvalues of the Dirichlet Laplacian.
+This construction makes it possible to "hear" drums where the shape of the drumhead is any closed and simple curve.
+To do this, we begin with the shape of our drumhead, which is a region of the real plane bounded by piecewise smooth curves.
+Since we wish to emulate the physical properties of a drum, we want to define some system that models the vibration of the drum membrane which produces the sound.
+This is done using the wave equation over our boundary, with the boundary condition that the function is 0 on the boundary.
+This boundary condition comes from the fact that the membrane is fixed to the drum shell around the edge of the drumhead, and thus does not vibrate freely.
+We call this system of the differential equation with the boundary conditions the Dirichlet Laplacian.
+The Dirichlet Laplacian allows us to model the physical vibration of the drum, and we can calculate its eigenvalues to find the fundamental frequency and overtones.
+Thus, by modeling the vibration of the drumhead using the Dirichlet Laplacian and studying its properties, we can produce "sound" via the eigenvalues.
+
+In 1877, Lord Rayleigh conjectured the following $\cite{rayleigh}$
+
+\begin{quote}
+If the area of a membrane be given, there must evidently be some
+form of boundary for which the pitch (of the principal tone) is the
+gravest possible, and this form can be no other than the circle.
+\end{quote}
+
+This conjecture was left unsolved for a very long time.
+In 1923, Faber published a proof which was followed by an independent proof by Krahn in 1925 $\cite{krahn}$.
+From the so called Faber-Krahn inequality, we know that for any drumhead with a given area, the circle is the one with the lowest tone.
+In 1951, Polya and Szego conjectured that a similar statement holds for drumheads with a polygonal shape $\cite{extremum}$.
+This conjecture has been shown to be true for 3 and 4 sided polygons, but remains unproven for any other number of sides.
+
+There are two main hurdles that are halting progress on this conjecture.
+The first is that the tools that were used to prove both Lord Rayleighs conjecture as well as the small cases for the Polya-Szego conjecture are not available when the number of sides is greater than four.
+The main tool that is used is called Steiner Symmetrization, and when there are more than four sides this symmetrization method creates additional sides at each step.
+
+The purpose of this paper is to show a specific method for running numerical approximations to suggest that this conjecture is indeed true.
+This is done using a method based on fundamental solutions $\cite{code}$.
+Specifically, we consider all functions that satisfy the Laplace Equation and then solve for the linear coefficients using the boundary conditions.
+Once this is done we use gradient descent to find the polygon with the minimum first eigenvalue, which is equivalent to the first fundamental tone of the drum.
+
+* Physical Definition
+Consider a homogeneous elastic drumhead, or membrane, stretched over a rigid frame.
+We will represent the frame as a domain $\Omega$ in $\mathbb{R}^{2}$.
+Take the function $u(x,y,t)$ to be the vertical displacement of the membrane from its resting position.
+Then for any disk $D \subset \Omega$, Newton's second law of motion states that
+
+$$ \int_{\partial D} T \frac{\partial u}{\partial \textbf{n}} \, dS = \int_{\partial D} \rho u_{tt} \, dA $$
+
+where T is the constant tension, $\rho$ is the density constant, and $\textbf{n}$ is the outward normal of the boundary $\cite{ryan}$
+
+* Math
+
 Consider the eigenvalue solutions for the Laplace operator with Dirichlet boundary conditions for any open, bounded set $\Omega \subset \mathbb{R}^{2}$
 
 \begin{equation}
@@ -57,20 +105,19 @@ Due to Rellich's compacness lemma TODO TODO, the spectrum of the Dirichlet Lapla
 
 $$ 0 < \lambda_1(\Omega) \leq \lambda_1(\Omega) \leq \lambda_1(\Omega) \leq ... \to +\infty$$
 
-which can be ordered by their multiplicity \cite{extremum}.
+which can be ordered by their multiplicity $\cite{extremum}$.
 The first eigenvalue $\lambda_{1}$, which is also called the fundamental tone, is of particular importance.
 
 
-In 1877, Rayleigh conjectured that for all domains with a fixed area, the fundamental tone is minimized by the disc \cite{rayleigh}.
-This was eventually proven in any euclidean space, using a technique called Schwarz rearrangement \cite{extremum}.
-* TODO Write the above explicitely using pg 46 extremum
+In 1877, Rayleigh conjectured that for all domains with a fixed area, the fundamental tone is minimized by the disc $\cite{rayleigh}$.
+This was eventually proven in any euclidean space, using a technique called Schwarz rearrangement $\cite{extremum}$.
+ TODO Write the above explicitely using pg 46 extremum
 
-* TODO Explain why we care about this (physics stuff)
-There are few polygons whose spectrum can be explicitely calculated. These polygons are equilateral triangles, hemi-equilateral triangles, and isosceles-right triangles \cite{calculate}.
+There are few polygons whose spectrum can be explicitely calculated. These polygons are equilateral triangles, hemi-equilateral triangles, and isosceles-right triangles $\cite{calculate}$.
 
 
 * Bibliography
-\printbibliography
+$\printbibliography$
 
 * DONE Assignment
 Write an essay summarizing the interaction between mathematics and music theory that you learn from this course or elsewhere. You should try to address at least five of the following ten questions. The essay should be _5-10_ pages in length, typeset with LaTeX
