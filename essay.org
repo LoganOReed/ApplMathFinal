@@ -75,7 +75,7 @@ The first is that the tools that were used to prove both Lord Rayleighs conjectu
 The main tool that is used is called Steiner Symmetrization, and when there are more than four sides this symmetrization method creates additional sides at each step.
 
 The purpose of this paper is to show a specific method for running numerical approximations to suggest that this conjecture is indeed true.
-This is done using a method based on fundamental solutions $\cite{code}$.
+This is done using a method based on fundamental solutions \cite{code}.
 Specifically, we consider all functions that satisfy the Laplace Equation and then solve for the linear coefficients using the boundary conditions.
 Once this is done we use gradient descent to find the polygon with the minimum first eigenvalue, which is equivalent to the first fundamental tone of the drum.
 
@@ -85,9 +85,27 @@ We will represent the frame as a domain $\Omega$ in $\mathbb{R}^{2}$.
 Take the function $u(x,y,t)$ to be the vertical displacement of the membrane from its resting position.
 Then for any disk $D \subset \Omega$, Newton's second law of motion states that
 
-$$ \int_{\partial D} T \frac{\partial u}{\partial \textbf{n}} \, dS = \int_{\partial D} \rho u_{tt} \, dA $$
+$$ \int_{\partial D} T \frac{\partial u}{\partial \textbf{n}} \, dS = \int_{ D} \rho u_{tt} \, dA $$
 
-where T is the constant tension, $\rho$ is the density constant, and $\textbf{n}$ is the outward normal of the boundary $\cite{ryan}$
+where T is the constant tension, $\rho$ is the density constant, and $\textbf{n}$ is the outward normal of the boundary $\cite{ryan}$. By the divergence theorem, we have
+
+$$ \int_{D} T \Delta u \, dA = \int_{D} \rho u_{tt} \, dA $$
+
+where \Delta is the Laplace operator. From this we can get the wave equation on \Omega
+
+$$ u_{tt} = c^{2} \Delta u $$
+
+where we define u to be 0 on the boundary and where $c = \sqrt{T / \rho}$.
+We can solve this wave equation using $u(x,y,t) = T(t)V(x,y)$ which gives us
+
+$$ \frac{T''}{c^{2}T} = \frac{\Delta V}{V} = - \lambda $$
+
+and finally we have reduced our problem to the Dirichlet Laplacian
+
+$$ \Delta V = - \lambda V $$
+
+where $V$ on the boundary is zero \cite{ryan}.
+In the next section, we will start from the Dirichlet Laplacian and introduce the conjectures in a formal setting.
 
 * Math
 
@@ -117,7 +135,7 @@ There are few polygons whose spectrum can be explicitely calculated. These polyg
 
 
 * Bibliography
-$\printbibliography$
+\printbibliography
 
 * DONE Assignment
 Write an essay summarizing the interaction between mathematics and music theory that you learn from this course or elsewhere. You should try to address at least five of the following ten questions. The essay should be _5-10_ pages in length, typeset with LaTeX
