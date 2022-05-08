@@ -4,6 +4,8 @@
 
 
 #+SETUPFILE: ~/.doom.d/latex-output
+#+LATEX_HEADER: \newtheorem{theorem}{Theorem}[section]
+#+LATEX_HEADER: \newtheorem{conjecture}[theorem]{Conjecture}
 #+LATEX_HEADER: \usepackage{biblatex}
 #+LATEX_HEADER: \addbibresource{refs.bib}
 
@@ -113,23 +115,39 @@ Consider the eigenvalue solutions for the Laplace operator with Dirichlet bounda
 
 \begin{equation}
 \begin{cases}
--\Delta u = \lambda u \\
-\quad\quad u = 0
+-\Delta u = \lambda u & \text{in} \, \Omega \\
+\quad\quad u = 0   & \text{on} \, \partial \Omega
 \end{cases}
 \end{equation}
 
+Due to Rellich's compacness lemma, the spectrum of the Dirichlet Laplacian consists only of discrete eigenvalues
 
-Due to Rellich's compacness lemma TODO TODO, the spectrum of the Dirichlet Laplacian consists only of discrete eigenvalues
+$$ 0 < \lambda_1(\Omega) \leq \lambda_2(\Omega) \leq \lambda_3(\Omega) \leq ... \to +\infty$$
 
-$$ 0 < \lambda_1(\Omega) \leq \lambda_1(\Omega) \leq \lambda_1(\Omega) \leq ... \to +\infty$$
-
-which can be ordered by their multiplicity $\cite{extremum}$.
+which can be ordered by their multiplicity \cite{extremum}.
 The first eigenvalue $\lambda_{1}$, which is also called the fundamental tone, is of particular importance.
+One noteworthy property of the first eigenvalue is it's connection with the fundamental pitch of a drum with the same shape, as we saw in the previous section.
 
+In 1877, Rayleigh conjectured that for all domains with a fixed area, the fundamental tone is minimized by the disc \cite{rayleigh}.
+This was eventually proven in any euclidean space by Faber and also independentally by Krahn \cite{extremum}.
 
-In 1877, Rayleigh conjectured that for all domains with a fixed area, the fundamental tone is minimized by the disc $\cite{rayleigh}$.
-This was eventually proven in any euclidean space, using a technique called Schwarz rearrangement $\cite{extremum}$.
- TODO Write the above explicitely using pg 46 extremum
+\begin{theorem}[Faber-Krahn]
+Let c be a positive number and B the ball of volume c. Then,
+$$
+\lambda_{1}(B) = \text{min}\{\lamdba_{1}(\Omega) , \Omega \text{open subset of } \mathbb{R}^{N} , |\Omega| = c \}
+$$
+\end{theorem}
+
+In 1951, Polya and Szego conjectured a similar statement about regular polygons \cite{polya}.
+
+\begin{conjecture}[Polya-Szego]
+Let $P_{n}$ be the set of simple polygons with $n$ sides.
+The unique solution to the minimization problem
+$$
+\min_{P \in P_{n},|P|=\pi} \lambda_{1} (P)
+$$
+is the regular polygon with $n$ sides and area \pi
+\end{conjecture}
 
 There are few polygons whose spectrum can be explicitely calculated. These polygons are equilateral triangles, hemi-equilateral triangles, and isosceles-right triangles $\cite{calculate}$.
 
