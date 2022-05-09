@@ -1,5 +1,5 @@
 
-#+TITLE: The Mathematics of Music Theory
+#+TITLE: Numerical Estimations of the Dirichlet Laplacian on Polygons
 #+AUTHOR: Logan Reed
 
 
@@ -7,8 +7,13 @@
 #+LATEX_HEADER: \newtheorem{theorem}{Theorem}[section]
 #+LATEX_HEADER: \newtheorem{conjecture}[theorem]{Conjecture}
 #+LATEX_HEADER: \usepackage{biblatex}
+#+LATEX_HEADER: \usepackage{setspace}
 #+LATEX_HEADER: \addbibresource{refs.bib}
 
+#+LATEX_HEADER: \usepackage{graphicx}
+#+LATEX_HEADER: \graphicspath{ {./images} }
+
+\doublespacing
 
 #+BEGIN_abstract
 
@@ -30,7 +35,7 @@ A conjecture of Polya and Szego states that among the polygons with the same num
 * TODO Rewrite Outline for Final Project
 
 
-* [16%] Assignment Outline
+* TODO Assignment Outline
 ** DONE Abstract
 ** TODO Introduction
 *** TODO Motivation
@@ -155,6 +160,11 @@ is the regular polygon with $n$ sides and area \pi
 
 There are few polygons whose spectrum can be explicitly calculated. These polygons are equilateral triangles, hemi-equilateral triangles, and isosceles-right triangles $\cite{calculate}$.
 
+The following figure contains every polygon whose spectrum we can calculate explicitely.
+
+\includegraphics[width=12cm, height=5cm]{shapes.jpg}
+
+Although our ability to explicitely calculate shapes is very limited, there has been some success in proving the conjecture.
 Polya himself proved his conjecture in the cases of $N = 3$ or $N = 4$ \cite{isoperimetric}.
 
 \begin{theorem}[Polya]
@@ -261,9 +271,21 @@ $$ \frac{d\lambda_{1}}{dx_{2i}} = - \int_{A_{i-1}A_{i}} \mathbb{I}_{i-1,i} (\fra
 
 $$ - \int_{A_{i}A_{i+1}} \mathbb{I}_{i,i+1} (\frac{\partial u}{\partial \textbf{n}})^{2} \textbf{n}_{i,i+1} \, d\sigma $$
 
+Once we have computed everything we have introduced, the last step is to find the minimal value using gradient descent.
+Following this method one can see that for polygons with $N \in [5,15]$ number of sides we quickly converge to the regular polygon \cite{code}.
+
+* Conclusion
+
+The shapes that minimize the value of the first eigenvalue for the Dirichlet Laplacian have been of interest since Lord Rayleigh's Conjecture.
+This was extended to polynomials by Polya and Szego, and was proven for specific cases by Polya.
+Because of the difficulty of proving this conjecture directly, we have introduced a numerical approximation method for checking the conjecture for polygons that have 5 or more sides.
+
+To further this area of study, one could study the rate at which the gradient descent approaches a critical point.
+One could also investigate improvements of the process we took to set up the gradient descent.
+The major downside of this approach is that the runtime grows quickly as the number of edges increases.
+It would be of great interest to use computational methods to compute the necessary values for each vertex in parallel.
 
 
-* Bibliography
 \printbibliography
 
 * DONE Assignment
