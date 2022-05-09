@@ -10,11 +10,11 @@
 #+LATEX_HEADER: \addbibresource{refs.bib}
 
 
-#+BEGIN_ABSTRACT
+#+BEGIN_abstract
 
 A conjecture of Polya and Szego states that among the polygons with the same number of sides and area, the regular polygon minimizes the first eigenvalue of the Dirichlet Laplacian. This conjecture has only been proven in the cases of three and four sides. In this paper introduce a computational approach to checking the Polya-Szego conjecture for five or more sides.
 
-#+END_ABSTRACT
+#+END_abstract
 
 * TODO Create TODO Tasks from assignment pdf
 ** TODO 10-15 Pages in Length
@@ -81,7 +81,9 @@ This is done using a method based on fundamental solutions \cite{code}.
 Specifically, we consider all functions that satisfy the Laplace Equation and then solve for the linear coefficients using the boundary conditions.
 Once this is done we use gradient descent to find the polygon with the minimum first eigenvalue, which is equivalent to the first fundamental tone of the drum.
 
-* Physical Definition
+* Background
+
+** Physical Definition
 Consider a homogeneous elastic drumhead, or membrane, stretched over a rigid frame.
 We will represent the frame as a domain $\Omega$ in $\mathbb{R}^{2}$.
 Take the function $u(x,y,t)$ to be the vertical displacement of the membrane from its resting position.
@@ -109,7 +111,7 @@ $$ \Delta V = - \lambda V $$
 where $V$ on the boundary is zero \cite{ryan}.
 In the next section, we will start from the Dirichlet Laplacian and introduce the conjectures in a formal setting.
 
-* Math
+** Polya-Szego's Conjecture
 
 Consider the eigenvalue solutions for the Laplace operator with Dirichlet boundary conditions for any open, bounded set $\Omega \subset \mathbb{R}^{2}$
 
@@ -120,7 +122,7 @@ Consider the eigenvalue solutions for the Laplace operator with Dirichlet bounda
 \end{cases}
 \end{equation}
 
-Due to Rellich's compacness lemma, the spectrum of the Dirichlet Laplacian consists only of discrete eigenvalues
+Due to Rellich's compactness lemma, the spectrum of the Dirichlet Laplacian consists only of discrete eigenvalues
 
 $$ 0 < \lambda_1(\Omega) \leq \lambda_2(\Omega) \leq \lambda_3(\Omega) \leq ... \to +\infty$$
 
@@ -129,16 +131,18 @@ The first eigenvalue $\lambda_{1}$, which is also called the fundamental tone, i
 One noteworthy property of the first eigenvalue is it's connection with the fundamental pitch of a drum with the same shape, as we saw in the previous section.
 
 In 1877, Rayleigh conjectured that for all domains with a fixed area, the fundamental tone is minimized by the disc \cite{rayleigh}.
-This was eventually proven in any euclidean space by Faber and also independentally by Krahn \cite{extremum}.
+This was eventually proven in any euclidean space by Faber and also independently by Krahn \cite{extremum}.
 
 \begin{theorem}[Faber-Krahn]
 Let c be a positive number and B the ball of volume c. Then,
 $$
-\lambda_{1}(B) = \text{min}\{\lamdba_{1}(\Omega) , \Omega \text{open subset of } \mathbb{R}^{N} , |\Omega| = c \}
+\lambda_{1}(B) = \text{min}\{\lamdba_{1}(\Omega) , \Omega \text{ open subset of } \mathbb{R}^{N} , |\Omega| = c \}
 $$
 \end{theorem}
 
 In 1951, Polya and Szego conjectured a similar statement about regular polygons \cite{polya}.
+This conjecture feels like it follows from the Faber-Krahn Theorem, as regular polygons are in some sense the roundest polygons for a given number of sides.
+However, while this conjecture is simple to state and simple to understand, it has been largely left unsolved for 70 years.
 
 \begin{conjecture}[Polya-Szego]
 Let $P_{n}$ be the set of simple polygons with $n$ sides.
@@ -149,7 +153,114 @@ $$
 is the regular polygon with $n$ sides and area \pi
 \end{conjecture}
 
-There are few polygons whose spectrum can be explicitely calculated. These polygons are equilateral triangles, hemi-equilateral triangles, and isosceles-right triangles $\cite{calculate}$.
+There are few polygons whose spectrum can be explicitly calculated. These polygons are equilateral triangles, hemi-equilateral triangles, and isosceles-right triangles $\cite{calculate}$.
+
+Polya himself proved his conjecture in the cases of $N = 3$ or $N = 4$ \cite{isoperimetric}.
+
+\begin{theorem}[Polya]
+The equilateral triangle has the least first eigenvalue among all triangles of given area.
+The square has the least first eigenvalue among all quadrilaterals of given area.
+\end{theorem}
+
+This proof relies on a technique called Steiner Symmetrization, which does not work on polygons with five or greater sides \cite{ryan}.
+All other cases remain unsolved.
+In the remaining parts of this paper, we will introduce a method to numerically estimate the polygon which minimizes the first eigenvalue for an arbitrary number of sides.
+
+* Numerical Estimation
+We will introduce a method that has the following two properties
+    \begin{enumerate}
+        \item Provide a algorithmic process which is precise and fast
+        \item Find the derivative of $\lambda_1$ with respect to the vertices of the polygon
+    \end{enumerate}
+This will be done based on the method of fundamental solutions, which will produce a system of equations that depends on the vertices of the polygon.
+From this system of equations, we will find the derivative of the first eigenvalue based on the vertices of the polygon.
+This will allow us to use gradient descent on this system, which will eventually leave us with a polygon that has a locally minimal first eigenvalue.
+
+** Method of Fundamental Solutions
+
+
+We begin by considering the functions which already satisfy the equation
+
+$$ - \Delta u = \lambda u \text{ in } \Omega $$
+
+One way to do this is to consider the functions
+
+$$ u = \alpha_1 \phi_1^\lambda + ... + \alpha_N \phi_N^\lambda $$
+
+where $\phi_i^\lambda$, $i=1...M$ are fundamental radially symmetric solutions of
+
+$$ -\Delta \phi = \lambda \phi $$
+
+For our purposes, we choose these solutions to be of the form
+
+$$ \phi_{i}^{\lambda}(x) = H_{0}(\sqrt{\lambda} |x - y_{i}|) $$
+
+where $H_{0}$ is the Hankel function of order 0, $\{y_{i}\}$ is the set of singularities of the functions $\phi_i^\lambda$ outside of the boundary $\Omega$ \cite{code}.
+The coefficients $\alpha_{1}, \alpha_{2}... \alpha_{N}$ are found using the Dirichlet boundary conditions on a discretization of $\partial \Omega$ which we will denote as $\{x_{i}\}$.
+From this set up, we have constructed a system of equations
+
+$$ u = \alpha_1 \phi_1^\lambda(x_{i}) + ... + \alpha_N \phi_N^\lambda(x_{i}) = 0, \text{  } i = 1,2,...,N $$
+
+From this system of equations, we can define a matrix for a given $\lambda$
+
+$$ A_{\lambda} = \{\phi_{j}\{x_{i}\}^{\lambda}\}_{i,j=1}^{N} $$
+
+Since we want non-trivial solutions to the system of equations, our goal is to find values for $\lambda$ which causes $A_{\lambda}$ to be singular.
+In other words, we wish to find values that make the matrix non-invertible and so we wish to find values where the determinant is 0.
+Formally, for some interval $I$, we wish to locate the values $\lambda \in I$ where
+
+$$ \text{det} A_{\lambda} = 0 $$
+
+However, this creates a problem.
+Since the matrix is singular, the matrix does not have a unique solution.
+To combat this, we introduce another equation to some interior point such that
+
+$$ \Sigma\alpha_{i} \phi_{i}^{\lambda} $$
+
+does not vanish \cite{code}.
+This will allow us to find a unique solution of $A_{\lambda}$.
+
+** Gradient Descent
+In the last section, we found a transformation that gives us information about the eigenvalues depending only on the vertices of the polygon.
+In this section we will compute the derivative of the first eigenvalue with respect to the vertices of the polygon.
+This is done by perturbing the shape $\Omega$ by some vector field $V$.
+From this we get the derivative
+
+$$ \frac{d\lambda}{dV} = - \int_{\partial \Omega}(\frac{\partial u}{\partial \textbf{n}})^{2} V \textbf{n} \, d\sigma $$
+
+where \textbf{n} is the outer unit normal field to $\partial \Omega$ \cite{perturbation}.
+However, as we wish to compute the derivative with respects to vertices of the polygon, we will consider particular vector fields $V$.
+Specifically, we will look at perturbations of one vertex.
+This will in turn perturb the segments connected to the vertex.
+Let $A_{i-1} A_{i}, A_{i} A_{i+1}$ be the segments of the polygon connected to the vertex.
+Then for this specific perturbation, $V$ has the following form on the border of the polygon
+
+\begin{equation}
+\begin{cases}
+\mathbb{I}_{i-1,i}(x)(1,0) & x \in [A_{i-1}A_{i}] \\
+\mathbb{I}_{i,i+1}(x)(1,0) & x \in [A_{i}A_{i+1}] \\
+0                         & \text{otherwise}
+\end{cases}
+\end{equation}
+
+where $\mathbb{I}_{i,j}: A_{i}A_{j} \to [0,1]$ is an affine function such that
+
+$$ \mathbb{I}_{i,j}(A_{i}) = 0 $$
+$$ \mathbb{I}_{i,j}(A_{j}) = 1 $$
+
+We will denote the outer normal of the segment $A_{i}A_{i+1}$ by $\textbf{n}_{i,i+1}$.
+Finally, we can write the derivative of the first eigenvalue with respect to the vertices of the polygon in the following way
+
+$$ \frac{d\lambda_{1}}{dx_{2i-1}} = - \int_{A_{i-1}A_{i}} \mathbb{I}_{i-1,i} (\frac{\partial u}{\partial \textbf{n}})^{2} \textbf{n}_{i-1,i} \, d\sigma $$
+
+$$ - \int_{A_{i}A_{i+1}} \mathbb{I}_{i,i+1} (\frac{\partial u}{\partial \textbf{n}})^{2} \textbf{n}_{i,i+1} \, d\sigma $$
+
+and we also have
+
+$$ \frac{d\lambda_{1}}{dx_{2i}} = - \int_{A_{i-1}A_{i}} \mathbb{I}_{i-1,i} (\frac{\partial u}{\partial \textbf{n}})^{2} \textbf{n}_{i-1,i} \, d\sigma $$
+
+$$ - \int_{A_{i}A_{i+1}} \mathbb{I}_{i,i+1} (\frac{\partial u}{\partial \textbf{n}})^{2} \textbf{n}_{i,i+1} \, d\sigma $$
+
 
 
 * Bibliography
